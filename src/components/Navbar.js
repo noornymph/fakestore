@@ -1,17 +1,22 @@
 import React from "react";
-import "../App.css";
+import "../styles/App.css";
 
-const Navbar = ({ searchQuery, onSearchChange, onSearchSubmit }) => {
+const Navbar = ({ searchQuery, onSearchChange, onAddProductClick }) => {
   return (
     <div className="navbar">
       <h1>Shopping App</h1>
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={searchQuery}
-        onChange={onSearchChange}
-        className="search-input"
-      />
+      <div className="side-elements">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={onSearchChange}
+          className="search-input"
+        />
+        <button className="add-product-button" onClick={onAddProductClick}>
+          Add Product
+        </button>
+      </div>
     </div>
   );
 };

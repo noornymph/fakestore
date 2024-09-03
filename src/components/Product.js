@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
-import "../App.css";
+import "../styles/App.css";
 import { DataContext } from "../hooks/DataContext";
 
-const Product = ({ searchQuery }) => {
+const Product = ({ searchQuery, products }) => {
   const { data, loading, error } = useContext(DataContext);
+  const combinedData = [...data, ...products];
+  console.log(combinedData);
 
   // Filter products based on search query
-  const filteredProducts = data.filter((product) =>
+  const filteredProducts = combinedData.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
