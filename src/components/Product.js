@@ -1,31 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import "../App.css";
-import axios from "axios";
+import { DataContext } from "../hooks/DataContext";
 
-const Product = () => {
-  const [loading, setLoading] = useState(false); // Indicates loading state
-  const [data, setData] = useState([]); // Stores fetched data
+const Product = ({ searchQuery }) => {
+  const { data, loading, error } = useContext(DataContext);
 
-  useEffect(() => {
-    setLoading(true); // Start loading before making the request
-    axios({
-      method: "GET",
-      url: "https://fakestoreapi.com/products",
-    })
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data); // Store fetched data in the state
-      })
-      .catch((e) => console.log(e))
-      .finally(() => setLoading(false)); // Stop loading after the request completes
-  }, []);
+  // Filter products based on search query
+  const filteredProducts = data.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="product-container">
       {loading ? (
-        <p>Loading...</p> // Show loading state while fetching data
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
       ) : (
-        data.map((product) => (
+        filteredProducts.map((product) => (
           <div key={product.id} className="card">
             <div>
               <img src={product.image} alt={product.title} />
@@ -33,7 +25,7 @@ const Product = () => {
             <div className="card-description">
               <h6>{product.title}</h6>
               <h6>{`Price: ${product.price}`}</h6>
-              <h6>{`Category : ${product.category}`}</h6>
+              <h6>{`Category: ${product.category}`}</h6>
             </div>
           </div>
         ))

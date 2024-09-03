@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import "./App.css";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Product from "./components/Product";
+import Footer from "./components/Footer";
+import { DataProvider } from "./hooks/DataContext";
 
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div className="App">
-      <Navbar />
-      <Product />
+      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+      <Product searchQuery={searchQuery} />
       <Footer />
     </div>
   );
