@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import Product from "./components/Product";
+import Footer from "./components/Footer";
+import AddProductForm from "./components/AddProductForm";
+import { DataProvider } from "./hooks/DataContext";
 
-function App() {
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [products, setProducts] = useState([]); // State to manage products
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleAddProductClick = () => {
+    setShowAddProductForm(true);
+  };
+
+  const handleAddProduct = (newProduct) => {
+    setProducts((prevProducts) => [...prevProducts, newProduct]);
+  };
+
+  const handleCloseForm = () => {
+    setShowAddProductForm(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onAddProductClick={handleAddProductClick}
+      />
+      {showAddProductForm && (
+        <AddProductForm
+          onAddProduct={handleAddProduct}
+          onClose={handleCloseForm}
+        />
+      )}
+      <Product searchQuery={searchQuery} products={products} />
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
